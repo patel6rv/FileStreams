@@ -1,0 +1,5 @@
+00000001, Pipeweed, Long Bottom Leaf, 600.0
+00000002, Lembas, Elven Wayfare Bread, 200.0
+00000003, Wine, Woodland Elf Wine, 400.0
+00000004, Mushrooms, Farmer Took's Finest, 125.0
+00000005, Mithril, Enchanted Dwarven Armor, 3000.0

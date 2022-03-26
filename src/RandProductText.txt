@@ -1,0 +1,1 @@
+Product{ID='000034', name='                              again', description='                                                                    another', cost=312.0}
