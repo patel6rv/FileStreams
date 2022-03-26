@@ -21,13 +21,8 @@ public class RandProductSearchGUIRunner extends JFrame
     JPanel mainPnl;
     JPanel subMain;
 
-    JPanel displayOGPnl;
     JPanel displayFilteredPnl;
     JPanel controlPnl;
-
-    //displaying
-    JTextArea displayOGTextTA;
-    JScrollPane OGTextScroller;
 
     JTextArea displayFilteredTextTA;
     JScrollPane filteredScroller;
