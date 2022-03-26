@@ -6,6 +6,10 @@ import java.io.RandomAccessFile;
 public class RandProductMakerGUIRunner extends JFrame
 {
     static final String FILEPATH = "C:\\Users\\rmp12\\IdeaProjects\\FileStreams\\src\\RandProductText.txt";
+    public static final int ID_PADDED_LENGTH = 6;
+    public static final int NAME_PADDED_LENGTH = 35;
+    public static final int DESCRIPTION_PADDED_LENGTH = 75;
+    public static final int COST_PADDED_LENGTH = 8;
 
     JPanel mainPnl;
 
@@ -25,8 +29,7 @@ public class RandProductMakerGUIRunner extends JFrame
     double cost;
 
     int recordCount = 0;
-    int position;
-    boolean check;
+    boolean hasValidProperties;
 
     public RandProductMakerGUIRunner()
     {
@@ -98,14 +101,12 @@ public class RandProductMakerGUIRunner extends JFrame
         {
             getProductFields();
 
-            if (check) {
-                padText();
-                Product item = new Product(id, name, description, cost);
-                String productStr = String.valueOf(item);
+            if (hasValidProperties) {
+                Product product = new Product(id, name, description, cost);
 
                 try {
                     //if I get rid of the position parameter in writeToFile method I can remove 0
-                    writeToFile(FILEPATH, productStr, 0);
+                    writeProductToFile(FILEPATH, product);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -129,32 +130,28 @@ public class RandProductMakerGUIRunner extends JFrame
     }
 
     //would have to remove position parameter to do file.seek(file.length()) which would mean it writes to the last spot
-    private static void writeToFile(String filePath, String data, int position)
+    private void writeProductToFile(String filePath, Product product)
             throws IOException {
 
         RandomAccessFile file = new RandomAccessFile(filePath, "rw");
-        file.seek(position);
-        file.write(data.getBytes());
+
+        String paddedID = padProductFields(product.getID(), ID_PADDED_LENGTH, "0");
+        String paddedName = padProductFields(product.getName(), NAME_PADDED_LENGTH, " ");
+        String paddedDescription = padProductFields(product.getDescription(), DESCRIPTION_PADDED_LENGTH, " ");
+        String paddedCost = padProductFields(String.valueOf(product.getCost()), COST_PADDED_LENGTH, " ");
+
+        file.seek(file.length());
+        file.write(paddedID.getBytes());
+        file.write(paddedName.getBytes());
+        file.write(paddedDescription.getBytes());
+        file.write(paddedCost.getBytes());
         file.close();
-
-    }
-
-    private void padText()
-    {
-        name = padProductFields(name, 35, " ");
-        description = padProductFields(description, 75, " ");
-        id = padProductFields(id, 6, "0");
     }
 
     private String padProductFields(String field, int padLength, String padding)
     {
         int repeated = padLength - field.length();
-        String pad = padding;
-        String paddedText;
-
-        paddedText = pad.repeat(repeated) + field;
-
-        return paddedText;
+        return padding.repeat(repeated) + field;
     }
 
     private void clearFields()
@@ -179,6 +176,6 @@ public class RandProductMakerGUIRunner extends JFrame
         boolean costCheck = SafeInput.checkDouble(costTF.getText());
         cost = Double.parseDouble(costTF.getText());
 
-        check = nameCheck && descriptionCheck && idCheck && costCheck;
+        hasValidProperties = nameCheck && descriptionCheck && idCheck && costCheck;
     }
 }

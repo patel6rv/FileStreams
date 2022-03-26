@@ -21,6 +21,10 @@ public class Product
         this.cost = cost;
     }
 
+    public Product() {
+
+    }
+
     private String genIDNum() {
         String newID = "" + IDSeed;
         while(newID.length() < 8){
